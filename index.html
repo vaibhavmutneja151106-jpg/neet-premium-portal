@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NEET MCQ Portal</title>
+<style>
+body { font-family: Arial; background:#f2f2f2; text-align:center; padding:20px;}
+.container { background:white; padding:20px; border-radius:10px; max-width:600px; margin:auto; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+button { padding:10px 20px; margin:10px; border:none; border-radius:5px; cursor:pointer;}
+.correct { background:green; color:white;}
+.wrong { background:red; color:white;}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>NEET Practice MCQ</h2>
+
+<p id="question">Which organ produces insulin?</p>
+
+<button onclick="checkAnswer('A')">A. Liver</button>
+<button onclick="checkAnswer('B')">B. Pancreas</button>
+<button onclick="checkAnswer('C')">C. Kidney</button>
+<button onclick="checkAnswer('D')">D. Heart</button>
+
+<h3 id="result"></h3>
+</div>
+
+<script>
+function checkAnswer(option){
+if(option==='B'){
+document.getElementById("result").innerHTML="Correct ✅";
+document.getElementById("result").style.color="green";
+}else{
+document.getElementById("result").innerHTML="Wrong ❌";
+document.getElementById("result").style.color="red";
+}
+}
+</script>
+
+</body>
+</html>
