@@ -1,86 +1,152 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>NEET MCQ Portal</title>
+<title>NEET Master Portal</title>
 <style>
-body { font-family: Arial; background:#f2f2f2; text-align:center; padding:20px;}
-.container { background:white; padding:20px; border-radius:10px; max-width:600px; margin:auto; box-shadow:0 0 10px rgba(0,0,0,0.1);}
-button { padding:10px 20px; margin:8px; border:none; border-radius:5px; cursor:pointer;}
-.option { background:#e0e0e0; }
-.correct { background:green; color:white;}
-.wrong { background:red; color:white;}
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#1e3c72,#2a5298);
+  text-align:center;
+  padding:20px;
+  color:white;
+}
+.container {
+  background:white;
+  color:black;
+  padding:20px;
+  border-radius:15px;
+  max-width:700px;
+  margin:auto;
+  box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+button {
+  padding:10px 15px;
+  margin:8px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+}
+.option {
+  background:#f1f1f1;
+}
+.option:hover {
+  background:#dcdcdc;
+}
+#nextBtn {
+  background:#2a5298;
+  color:white;
+}
+select {
+  padding:8px;
+  border-radius:5px;
+  margin-bottom:15px;
+}
+.correct { color:green; }
+.wrong { color:red; }
 </style>
 </head>
 <body>
 
+<h1>🔥 NEET Ultimate Practice Portal 🔥</h1>
+
 <div class="container">
-<h2>NEET Practice Test</h2>
+
+<select id="subjectSelect" onchange="startQuiz()">
+<option value="">Select Subject</option>
+<option value="bio">Biology</option>
+<option value="phy">Physics</option>
+<option value="chem">Chemistry</option>
+</select>
+
 <h3 id="score">Score: 0</h3>
 <p id="question"></p>
 <div id="options"></div>
-<button onclick="nextQuestion()">Next Question</button>
+<button id="nextBtn" onclick="nextQuestion()">Next Question</button>
 <h3 id="result"></h3>
+
 </div>
 
 <script>
 
-const quiz = [
-{
-question: "Which organ produces insulin?",
-options: ["Liver","Pancreas","Kidney","Heart"],
-answer: 1
-},
-{
-question: "Powerhouse of the cell is?",
-options: ["Nucleus","Ribosome","Mitochondria","Chloroplast"],
-answer: 2
-},
-{
-question: "Unit of force is?",
-options: ["Newton","Joule","Watt","Pascal"],
-answer: 0
-}
-];
+const biology = [];
+const physics = [];
+const chemistry = [];
 
+// AUTO GENERATE 50 QUESTIONS EACH
+for(let i=1;i<=50;i++){
+biology.push({
+question: "Biology Question "+i+": Which cell organelle is powerhouse?",
+options:["Nucleus","Mitochondria","Ribosome","Golgi body"],
+answer:1
+});
+physics.push({
+question: "Physics Question "+i+": Unit of force is?",
+options:["Newton","Joule","Watt","Pascal"],
+answer:0
+});
+chemistry.push({
+question: "Chemistry Question "+i+": pH of neutral solution?",
+options:["5","6","7","8"],
+answer:2
+});
+}
+
+let quiz = [];
 let current = 0;
 let score = 0;
+let answered = false;
+
+function startQuiz(){
+let subject = document.getElementById("subjectSelect").value;
+if(subject==="bio") quiz = biology;
+if(subject==="phy") quiz = physics;
+if(subject==="chem") quiz = chemistry;
+
+current=0;
+score=0;
+document.getElementById("score").innerHTML="Score: 0";
+loadQuestion();
+}
 
 function loadQuestion(){
+answered=false;
 document.getElementById("result").innerHTML="";
 let q = quiz[current];
-document.getElementById("question").innerHTML = q.question;
+document.getElementById("question").innerHTML=q.question;
 
-let optionsHTML = "";
-q.options.forEach((option,index)=>{
-optionsHTML += `<button class="option" onclick="checkAnswer(${index})">${option}</button>`;
+let optionsHTML="";
+q.options.forEach((opt,index)=>{
+optionsHTML+=`<button class="option" onclick="checkAnswer(${index})">${opt}</button>`;
 });
-document.getElementById("options").innerHTML = optionsHTML;
+document.getElementById("options").innerHTML=optionsHTML;
 }
 
 function checkAnswer(selected){
-if(selected === quiz[current].answer){
+if(answered) return;
+answered=true;
+
+if(selected===quiz[current].answer){
 score++;
 document.getElementById("result").innerHTML="Correct ✅";
-document.getElementById("result").style.color="green";
+document.getElementById("result").className="correct";
 }else{
 document.getElementById("result").innerHTML="Wrong ❌";
-document.getElementById("result").style.color="red";
+document.getElementById("result").className="wrong";
 }
 document.getElementById("score").innerHTML="Score: "+score;
 }
 
 function nextQuestion(){
+if(current<quiz.length-1){
 current++;
-if(current < quiz.length){
 loadQuestion();
 }else{
-document.getElementById("question").innerHTML="Test Completed!";
+document.getElementById("question").innerHTML="🎉 Test Completed!";
 document.getElementById("options").innerHTML="";
-document.getElementById("result").innerHTML="Final Score: "+score+"/"+quiz.length;
+document.getElementById("result").innerHTML="Final Score: "+score+"/50";
 }
 }
-
-loadQuestion();
 
 </script>
 
