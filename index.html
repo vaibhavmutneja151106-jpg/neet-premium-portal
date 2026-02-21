@@ -5,7 +5,8 @@
 <style>
 body { font-family: Arial; background:#f2f2f2; text-align:center; padding:20px;}
 .container { background:white; padding:20px; border-radius:10px; max-width:600px; margin:auto; box-shadow:0 0 10px rgba(0,0,0,0.1);}
-button { padding:10px 20px; margin:10px; border:none; border-radius:5px; cursor:pointer;}
+button { padding:10px 20px; margin:8px; border:none; border-radius:5px; cursor:pointer;}
+.option { background:#e0e0e0; }
 .correct { background:green; color:white;}
 .wrong { background:red; color:white;}
 </style>
@@ -13,28 +14,74 @@ button { padding:10px 20px; margin:10px; border:none; border-radius:5px; cursor:
 <body>
 
 <div class="container">
-<h2>NEET Practice MCQ</h2>
-
-<p id="question">Which organ produces insulin?</p>
-
-<button onclick="checkAnswer('A')">A. Liver</button>
-<button onclick="checkAnswer('B')">B. Pancreas</button>
-<button onclick="checkAnswer('C')">C. Kidney</button>
-<button onclick="checkAnswer('D')">D. Heart</button>
-
+<h2>NEET Practice Test</h2>
+<h3 id="score">Score: 0</h3>
+<p id="question"></p>
+<div id="options"></div>
+<button onclick="nextQuestion()">Next Question</button>
 <h3 id="result"></h3>
 </div>
 
 <script>
-function checkAnswer(option){
-if(option==='B'){
+
+const quiz = [
+{
+question: "Which organ produces insulin?",
+options: ["Liver","Pancreas","Kidney","Heart"],
+answer: 1
+},
+{
+question: "Powerhouse of the cell is?",
+options: ["Nucleus","Ribosome","Mitochondria","Chloroplast"],
+answer: 2
+},
+{
+question: "Unit of force is?",
+options: ["Newton","Joule","Watt","Pascal"],
+answer: 0
+}
+];
+
+let current = 0;
+let score = 0;
+
+function loadQuestion(){
+document.getElementById("result").innerHTML="";
+let q = quiz[current];
+document.getElementById("question").innerHTML = q.question;
+
+let optionsHTML = "";
+q.options.forEach((option,index)=>{
+optionsHTML += `<button class="option" onclick="checkAnswer(${index})">${option}</button>`;
+});
+document.getElementById("options").innerHTML = optionsHTML;
+}
+
+function checkAnswer(selected){
+if(selected === quiz[current].answer){
+score++;
 document.getElementById("result").innerHTML="Correct ✅";
 document.getElementById("result").style.color="green";
 }else{
 document.getElementById("result").innerHTML="Wrong ❌";
 document.getElementById("result").style.color="red";
 }
+document.getElementById("score").innerHTML="Score: "+score;
 }
+
+function nextQuestion(){
+current++;
+if(current < quiz.length){
+loadQuestion();
+}else{
+document.getElementById("question").innerHTML="Test Completed!";
+document.getElementById("options").innerHTML="";
+document.getElementById("result").innerHTML="Final Score: "+score+"/"+quiz.length;
+}
+}
+
+loadQuestion();
+
 </script>
 
 </body>
